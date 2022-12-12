@@ -109,7 +109,7 @@ def main():
         if auxLoss_valid <= minimun_valid_loss:
             fails = 0
             print(
-                f'Validation loss decreased from {round(minimun_valid_loss, 6)} to {round(valid_loss, 6)}')
+                f'Validation loss decreased from {round(minimun_valid_loss, 6)} to {round(auxLoss_valid, 6)}')
             torch.save(red.state_dict(), 'modeloRed.pkl')
             minimun_valid_loss = valid_loss
             print('Saving New Model')
@@ -120,7 +120,7 @@ def main():
             if fails >= 100:
                 print('Loss haven\'t decrease in a time! Saving Last Model')
                 torch.save(red.state_dict(), 'modeloRed.pkl')
-                minimun_valid_loss = valid_loss
+                minimun_valid_loss = auxLoss_valid
                 exit(0)
 
 
