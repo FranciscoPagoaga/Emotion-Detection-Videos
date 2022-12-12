@@ -60,6 +60,9 @@ if __name__ == '__main__':
         img1Height = int(img1.shape[0]*args.scale)
 
         img1 = cv.resize(img1, (img1Width, img1Height))
+        
+        aux = np.asarray(img1,dtype="int64")
+        print(aux.shape)
         tm.start()
 
         ## [inference]
