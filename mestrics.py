@@ -16,9 +16,9 @@ def main():
 
     labels = ['angry', 'disgust', 'fear', 'happy', 'neutral','sad', 'surprise']
     device = 'cuda'
-    print("Loading device")
+    print("Loading model")
     red = emotion_classifier(out=7).to(device=device)
-    checkpoint = torch.load('.\modeloRed.pkl', map_location=device)
+    checkpoint = torch.load('.\modeloRed_2.pkl', map_location=device)
     red.load_state_dict(checkpoint)
     red.eval()
     print("Loaded model on CUDA")
