@@ -68,8 +68,14 @@ def main():
         print("Utilizando CUDA")
     # loss function and optimizer
     criterion = torch.nn.CrossEntropyLoss()
-    optimizer = torch.optim.SGD(params=red.parameters(), lr=0.02)
+    optimizer = torch.optim.SGD(params=red.parameters(), lr=0.01)
     minimun_valid_loss = np.inf
+
+    training_accurracy_values = np.zeros(0)
+    validation_accurracy_values = np.zeros(0)
+    
+    training_loss_values = np.zeros(0)
+    validation_loss_values = np.zeros(0)
 
     print("Comenzando entrenamiento")
 
@@ -95,6 +101,7 @@ def main():
             loss.backward()
             optimizer.step()
             train_loss += loss.item()
+
         print(f'Validating {epoch}')
         epoch_acc = 100. * (train_running_correct / len(train_loader.dataset))
         valid_running_correct = 0
@@ -122,26 +129,31 @@ def main():
         print(
             f'Epoch {epoch} \tTraining Loss: {round(auxLoss_train,6)}\tValidation Loss: {round(auxLoss_valid, 6)}\n\tTraining Accurracy: {round(epoch_acc, 6)}\tValidation Accurracy:{epoch_acc_val}')
         
+        training_loss_values = np.append(training_loss_values, auxLoss_train)
+        training_accurracy_values = np.append(training_accurracy_values, epoch_acc)
+        validation_loss_values = np.append(validation_loss_values, auxLoss_valid)
+        validation_accurracy_values = np.append(validation_accurracy_values, epoch_acc_val)
+
         print("="*200)
         if auxLoss_valid <= minimun_valid_loss:
             fails = 0
             print(
                 f'Validation loss decreased from {round(minimun_valid_loss, 6)} to {round(auxLoss_valid, 6)}')
-            torch.save(red.state_dict(), 'modeloRed_2.pkl')
+            torch.save(red.state_dict(), 'modeloRed_3.pkl')
             minimun_valid_loss = auxLoss_valid
             print('Saving New Model')
-            print("="*100)
+            print("="*200)
         else:
-            # si las fallas llega a 10, se cierra el programa y se guarda el modelo
+            # si las fallas llega a 50, se cierra el programa y se guarda el modelo
             fails += 1
-            if fails >= 30:
+            if fails >= 50:
                 print('Loss haven\'t decrease in a time! Saving Last Model')
-                torch.save(red.state_dict(), 'modeloRed_2.pkl')
+                torch.save(red.state_dict(), 'modeloRed_3.pkl')
                 minimun_valid_loss = auxLoss_valid
                 exit(0)
 
     
-    torch.save(red.state_dict(), 'modeloRed_2.pkl')
+    torch.save(red.state_dict(), 'modeloRed_3.pkl')
     print('Saving New Model')
     print("="*200)
 if __name__ == "__main__":
