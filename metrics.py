@@ -48,7 +48,7 @@ def main():
     print("Loaded model on CUDA")
     transform = transforms.Compose([
         transforms.ToPILImage(),
-        transforms.Resize(20),
+        transforms.Resize(64),
         transforms.ToTensor(),
         transforms.Normalize(
             mean=[0.5, 0.5, 0.5],
@@ -56,26 +56,24 @@ def main():
         )
     ])
 
-    # image_route = sys.argv[1]
-
-    # image = cv.imread(image_route)
-    # original_image = image.copy()
-    # image = cv.cvtColor(image, cv.COLOR_BGR2RGB)
-    # image = transform(image)
-    # image = torch.unsqueeze(image, 0)
-    # print("predicting")
-    # with torch.no_grad():
-    #     ouput = red(image.to('cuda'))
-    # output_label = torch.topk(ouput, 1)
-    # pred_class = labels[int(output_label.indices)]
-    # print(pred_class)
-    # print("Return")
-
-
     tm = cv.TickMeter()
     print(len(sys.argv))
     if(len(sys.argv) > 1):
-        cap = cv.VideoCapture(sys.argv[1])
+        image_route = sys.argv[1]
+
+        image = cv.imread(image_route)
+        original_image = image.copy()
+        image = cv.cvtColor(image, cv.COLOR_BGR2RGB)
+        image = transform(image)
+        image = torch.unsqueeze(image, 0)
+        print("predicting")
+        with torch.no_grad():
+            ouput = red(image.to('cuda'))
+        output_label = torch.topk(ouput, 1)
+        pred_class = labels[int(output_label.indices)]
+        print(pred_class)
+        print("Return")
+        exit(0);
     else:
         cap = cv.VideoCapture(0)
             

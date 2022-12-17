@@ -61,6 +61,7 @@ def main():
         trainset, batch_size=BATCH_SIZE, shuffle=True, drop_last=True)
     valid_loader = DataLoader(
         validationset, batch_size=BATCH_SIZE, shuffle=True, drop_last=True)
+        
 
     red = emotion_classifier(out=7)
     if use_cuda:
@@ -77,10 +78,10 @@ def main():
     training_loss_values = np.zeros(0)
     validation_loss_values = np.zeros(0)
 
-    print("Comenzando entrenamiento")
+    print("Comenzando entrenamiento\n")
 
     for epoch in range(1, epochs+1):
-        print(f'Training {epoch}')
+        print(f'Training epoch {epoch} \n')
         train_loss = 0
         valid_loss = 0
         train_running_correct = 0
@@ -102,7 +103,7 @@ def main():
             optimizer.step()
             train_loss += loss.item()
 
-        print(f'Validating {epoch}')
+        print(f'\nValidating epoch {epoch}\n')
         epoch_acc = 100. * (train_running_correct / len(train_loader.dataset))
         valid_running_correct = 0
         contador_val = 0
@@ -128,6 +129,7 @@ def main():
         auxLoss_train = train_loss/contador_train
         print(
             f'Epoch {epoch} \tTraining Loss: {round(auxLoss_train,6)}\tValidation Loss: {round(auxLoss_valid, 6)}\n\tTraining Accurracy: {round(epoch_acc, 6)}\tValidation Accurracy:{epoch_acc_val}')
+        print("\n")
         
         training_loss_values = np.append(training_loss_values, auxLoss_train)
         training_accurracy_values = np.append(training_accurracy_values, epoch_acc)
@@ -144,9 +146,9 @@ def main():
             print('Saving New Model')
             print("="*200)
         else:
-            # si las fallas llega a 50, se cierra el programa y se guarda el modelo
+            # si las fallas llega a 30, se cierra el programa y se guarda el modelo
             fails += 1
-            if fails >= 50:
+            if fails >= 30:
                 print('Loss haven\'t decrease in a time! Saving Last Model')
                 torch.save(red.state_dict(), 'modeloRed_3.pkl')
                 minimun_valid_loss = auxLoss_valid

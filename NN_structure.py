@@ -13,8 +13,6 @@ class emotion_classifier(nn.Module):
         self.conv2 = nn.Conv2d(32, 64, kernel_size=3, padding=1)
         self.conv3 = nn.Conv2d(64, 128, kernel_size=3, padding=1)
         self.conv4 = nn.Conv2d(128, 256, kernel_size=3, padding=1)
-        #self.conv5 = nn.Conv2d(128, 256, kernel_size=3, padding=1)
-        #self.conv6 = nn.Conv2d(256, 512, kernel_size=3, padding=1)
 
         # linear layers
         self.linear1 = nn.Linear(256, 128)
@@ -22,23 +20,9 @@ class emotion_classifier(nn.Module):
         # self.linear3 = nn.Linear(128, 7)
         # self.linear4 = nn.Linear(128, self.out)
 
-        # droput
-        # self.dropout = nn.Dropout(p=0.1)
-
         # max_pooling
         self.pool = nn.MaxPool2d(2, 2)
 
-        # # Bacth Normalization (conv)
-        # self.norm1 = nn.BatchNorm2d(16)
-        # self.norm2 = nn.BatchNorm2d(32)
-        # self.norm3 = nn.BatchNorm2d(64)
-        # self.norm4 = nn.BatchNorm2d(128)
-        # self.norm5 = nn.BatchNorm2d(256)
-        # self.norm6 = nn.BatchNorm2d(512)
-        # # Batch normalization (linear)
-        # self.norm_linear1 = nn.BatchNorm1d(768)
-        # self.norm_linear2 = nn.BatchNorm1d(256)
-        # self.norm_linear3 = nn.BatchNorm1d(128)
 
     def forward(self, x):
         # convolutional layers with ReLU and pooling
